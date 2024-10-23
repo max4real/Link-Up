@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:link_up/_common/data/data_controller.dart';
+import 'package:link_up/_servies/theme_services/c_theme_controller.dart';
+import 'package:link_up/modules/gateway/v_gateway.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Future.delayed(const Duration(seconds: 1));
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    injectDependencies();
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Link Up!',
+      useInheritedMediaQuery: true,
+      locale: const Locale('en', 'EN'),
+      fallbackLocale: const Locale('en', 'US'),
+      theme: ThemeData(
+        useMaterial3: true,
       ),
+      home: const GatewayPage(),
     );
+  }
+
+  void injectDependencies() {
+    Get.put(DataController());
+    Get.put(ThemeController());
   }
 }
